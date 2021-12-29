@@ -109,22 +109,93 @@ class LinkedList:
 
             previous_node.next_node = curr_node.next_node
             curr_node = None
-            
 
+    def swap_nodes(self, swap_one, swap_two):
+        """
+        swap two nodes in linked list.
+        two cases, either netiher node is at tthe head
+        or at least one node is at the head.
+        """
+        if swap_one == swap_two:
+            return
+
+        curr_node_one = self.head
+        previous_node_one = None
+
+        while curr_node_one and curr_node_one.data != swap_one:
+            previous_node_one = curr_node_one
+            curr_node_one = curr_node_one.next_node
+
+        curr_node_two = self.head 
+        previous_node_two = None
+        while curr_node_two and curr_node_two.data != swap_two:
+            previous_node_two = curr_node_two
+            curr_node_two = curr_node_two.next_node
+
+        # if these values don't exist, stop
+        if not curr_node_one or not curr_node_two:
+            return
+
+        if previous_node_one:
+            previous_node_one.next_node = curr_node_two
+        else:
+            self.head = curr_node_two
+
+        if previous_node_two:
+            previous_node_two.next_node = curr_node_one
+        else:
+            self.head = curr_node_one
+
+        (curr_node_one.next_node, 
+         curr_node_two.next_node) = (curr_node_two.next_node, 
+                                     curr_node_one.next_node)
+
+
+    def reverse_iter(self):
+        """
+        A -> B -> C -> D -> None
+        just flip the arrows
+        A <- B < - C <- D < - None
+        """
+        prev = None
+        curr = self.head
+        
+        while curr:
+            nxt = curr.next_node # temp variable
+            curr.next_node = prev
+            prev = curr
+            curr = nxt
+
+        self.head = prev
+
+    def reverse_recursive(self):
+        
+        def _reverse_recursive(curr, prev):
+            """
+
+            """
+            if not curr:
+                return prev
+
+            nxt = curr.next_node
+            curr.next_node = prev
+            prev = curr
+            curr = nxt
+            return _reverse_recursive(curr, prev)
+
+        self.head = _reverse_recursive(curr=self.head, prev=None)
 
 if __name__ == "__main__":
     l = LinkedList()
-    print(l.get_length())
     l.append("A")
-    print(l.get_length())
     l.append("B")
-    l.append("c")
+    l.append("C")
     l.append("D")
     l.append("E")
-    l.prepend("0")
-    l.insert_after_node(l.head.next_node, 2)
     l.print_list()
-    l.delete_node_by_position(3)
+    print(l.swap_nodes('A', 'C'))
     l.print_list()
-    print(l.get_length())
-    print(l.get_length_recursive(l.head))
+    l.reverse_iter()
+    l.print_list()
+    l.reverse_recursive()
+    l.print_list()
