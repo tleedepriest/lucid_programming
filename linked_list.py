@@ -26,6 +26,9 @@ class LinkedList:
         
         else:
             last_node = self.head
+            # we have to check for last_node.next_node is not None
+            # if we only check last_node, last_node will be set to None once
+            # we exit loop, then we get an error.
             while last_node.next_node:
                 last_node = last_node.next_node
             last_node.next_node = new_node
@@ -107,6 +110,8 @@ class LinkedList:
                 curr_node = curr_node.next_node
                 position+=1
 
+            # don't raise error here like append because we kept track
+            # of the previous node, which is guarantteed to exist once exit loop.
             previous_node.next_node = curr_node.next_node
             curr_node = None
 
@@ -185,6 +190,75 @@ class LinkedList:
 
         self.head = _reverse_recursive(curr=self.head, prev=None)
 
+    def merge_sort(self, ll):
+        """
+        Example
+        1 -> 3 -> 5 -> 7 -> 9
+        2 -> 4 -> 6 -> 8 -> 10
+
+        1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
+        """
+        p = self.head
+        q = ll.head
+        # s points to lesser element and points to either p and q
+        # trails p and q
+        s = None
+        if not p:
+            return q
+
+        if not q:
+            return p
+
+        if p and q:
+            if p.data <= q.data:
+                s = p
+                p = s.next_node
+            else:
+                s = q
+                q = s.next_node
+
+            new_head = s
+
+        while p and q:
+            if p.data <= q.data:
+                # s.next is temporary value
+                # s used to be p or q, so here we are changing the pointer
+                # from previous p or q to the lessert value
+                s.next_node = p
+                # make sure it still tracks the lesser value
+                s = p
+                # move p up one
+                p = s.next_node
+            else:
+                s.next_node = q
+                s = q
+                q = s.next_node
+
+        if not p:
+            s.next_node = q
+
+        if not q:
+            s.next_node = p
+
+        return new_head
+
+    def remove_duplicates(self):
+        data = {}
+        cur_node = self.head
+        prev_node = None
+        
+
+        while cur_node:
+
+            if cur_node.data not in data:
+                data[cur_node.data] = cur_node
+                prev_node = cur_node
+            else:
+                prev_node.next_node = cur_node.next_node
+                cur_node = None
+
+            cur_node = prev_node.next_node
+
 if __name__ == "__main__":
     l = LinkedList()
     l.append("A")
@@ -199,3 +273,21 @@ if __name__ == "__main__":
     l.print_list()
     l.reverse_recursive()
     l.print_list()
+    ll_one = LinkedList()
+    ll_two = LinkedList()
+    for i in [x for x in range(0, 10) if x%2==1]:
+        ll_one.append(i)
+
+    for i in [x for x in range(0, 10) if x%2==0]:
+        ll_two.append(i)
+
+    ll_one.print_list()
+    ll_two.print_list()
+    new_l = ll_one.merge_sort(ll_two)
+    ll_one.print_list()
+    new_l = LinkedList()
+    for i in [0,0, 0, 0, 8, 9, 10]:
+        new_l.append(i)
+    new_l.print_list()
+    new_l.remove_duplicates()
+    new_l.print_list()
