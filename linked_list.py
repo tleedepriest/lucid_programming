@@ -6,7 +6,7 @@ class Node:
 class LinkedList:
     def __init__(self):
         self.head = None
-    
+
     def print_list(self):
         """
         print list from left to right
@@ -23,7 +23,6 @@ class LinkedList:
         new_node = Node(data)
         if self.head is None:
             self.head = new_node
-        
         else:
             last_node = self.head
             # we have to check for last_node.next_node is not None
@@ -36,14 +35,13 @@ class LinkedList:
     def get_length(self):
         curr_node = self.head
         length = 0
-        
+
         while curr_node:
             curr_node = curr_node.next_node
             length+=1
         return length
 
     def get_length_recursive(self, node):
-        
         if node is None:
             return 0
         return 1 + self.get_length_recursive(node.next_node)
@@ -82,7 +80,7 @@ class LinkedList:
             while cur_node and cur_node != deleted_node:
                 prev = cur_node
                 cur_node = cur_node.next_node
-             
+
              # element in node not present
             if cur_node is None:
                 return
@@ -131,7 +129,7 @@ class LinkedList:
             previous_node_one = curr_node_one
             curr_node_one = curr_node_one.next_node
 
-        curr_node_two = self.head 
+        curr_node_two = self.head
         previous_node_two = None
         while curr_node_two and curr_node_two.data != swap_two:
             previous_node_two = curr_node_two
@@ -151,8 +149,8 @@ class LinkedList:
         else:
             self.head = curr_node_one
 
-        (curr_node_one.next_node, 
-         curr_node_two.next_node) = (curr_node_two.next_node, 
+        (curr_node_one.next_node,
+         curr_node_two.next_node) = (curr_node_two.next_node,
                                      curr_node_one.next_node)
 
 
@@ -164,7 +162,7 @@ class LinkedList:
         """
         prev = None
         curr = self.head
-        
+
         while curr:
             nxt = curr.next_node # temp variable
             curr.next_node = prev
@@ -174,7 +172,7 @@ class LinkedList:
         self.head = prev
 
     def reverse_recursive(self):
-        
+
         def _reverse_recursive(curr, prev):
             """
 
@@ -246,18 +244,41 @@ class LinkedList:
         data = {}
         cur_node = self.head
         prev_node = None
-        
 
         while cur_node:
 
             if cur_node.data not in data:
                 data[cur_node.data] = cur_node
-                prev_node = cur_node
+                prev_node = cur_node #update the previous node
             else:
                 prev_node.next_node = cur_node.next_node
-                cur_node = None
+                cur_node = None #does this do anything??
 
             cur_node = prev_node.next_node
+
+    def find_n_to_last(self, n_to_last):
+        count = 0
+
+        # first find length of list
+        cur_node = self.head
+        if not cur_node:
+            return None
+
+        while cur_node:
+            cur_node = cur_node.next_node
+            count+=1
+
+        # go through list again but now no where n_to_last is
+        cur_node = self.head
+        while count > n_to_last:
+            cur_node = cur_node.next_node
+            count-=1
+
+        if cur_node is None:
+            print(f"The value {n} is longer than the length of the list.")
+            return None
+        return cur_node.data
+
 
 if __name__ == "__main__":
     l = LinkedList()
@@ -266,6 +287,8 @@ if __name__ == "__main__":
     l.append("C")
     l.append("D")
     l.append("E")
+    third_to_last = l.find_n_to_last(3)
+    print(f"third to last {third_to_last}")
     l.print_list()
     print(l.swap_nodes('A', 'C'))
     l.print_list()
