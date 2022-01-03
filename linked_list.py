@@ -269,6 +269,31 @@ class LinkedList:
             print(f"The value {n} is longer than the length of the list.")
         return cur_node.data
 
+    def count_occurences(self, data):
+        """
+        counts the number of occurences of data in linked
+        list
+        """
+        count = 0
+        cur_node = self.head
+        while cur_node:
+            if cur_node.data == data:
+                count+=1
+            cur_node = cur_node.next_node
+
+        return count
+
+    def count_occurences_rec(self, node, data):
+        """
+        recursive implementation of the program above.
+        """
+        if node is None:
+            return 0
+        else:
+            if node.data == data:
+                return 1 + self.count_occurences_rec(node.next_node, data)
+            return self.count_occurences_rec(node.next_node, data)
+
 
 if __name__ == "__main__":
     l = LinkedList()
@@ -277,6 +302,10 @@ if __name__ == "__main__":
     l.append("C")
     l.append("D")
     l.append("E")
+    l.append("E")
+    print(l.count_occurences("E"))
+    print(l.count_occurences_rec(l.head, 'E'))
+    print(l.count_occurences('G'))
     third_to_last = l.find_n_to_last(3)
     print(f"third to last {third_to_last}")
     l.print_list()
