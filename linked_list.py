@@ -257,26 +257,16 @@ class LinkedList:
             cur_node = prev_node.next_node
 
     def find_n_to_last(self, n_to_last):
-        count = 0
-
-        # first find length of list
-        cur_node = self.head
-        if not cur_node:
-            return None
-
-        while cur_node:
-            cur_node = cur_node.next_node
-            count+=1
+        length = self.get_length()
 
         # go through list again but now no where n_to_last is
         cur_node = self.head
-        while count > n_to_last:
+        while length > n_to_last:
             cur_node = cur_node.next_node
-            count-=1
+            length-=1
 
         if cur_node is None:
             print(f"The value {n} is longer than the length of the list.")
-            return None
         return cur_node.data
 
 
