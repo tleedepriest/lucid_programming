@@ -1,3 +1,5 @@
+from stack import Stack
+
 class Node:
     def __init__(self, data):
         self.data = data
@@ -321,10 +323,50 @@ class LinkedList:
             last_node.next_node = self.head
             self.head = after_rotate
 
+    def is_palindrome_one(self):
+        """
+        R -> A -> D -> A -> R -> None returns true
+        """
+        s = ""
+        cur_node = self.head
+        while cur_node:
+            s += cur_node.data
+            cur_node = cur_node.next_node
+        return s == s[::-1]
 
+    def is_palindrome_two(self):
+        """
+        Another way to implement is_palindrome function,
+        see is_palindrome_one
+        """
+        s = ""
+        stk = Stack()
+        cur_node = self.head
+        while cur_node:
+            stk.push(cur_node.data)
+            s += cur_node.data
+            cur_node = cur_node.next_node
+
+        for letter in s:
+            if letter != stk.pop():
+                return False
+
+        if stk.is_empty():
+            return True
+        return False
 
 if __name__ == "__main__":
     l = LinkedList()
+    l.append("R")
+    l.append("A")
+    l.append("D")
+    l.append("A")
+    l.append("R")
+    print(f"is palindrome: {l.is_palindrome_one()}")
+    print(f"is palindrome: {l.is_palindrome_two()}")
+    l.append("D")
+    l.append("E")
+    l.append("E")
     l.append("A")
     l.append("B")
     l.append("C")
@@ -332,6 +374,8 @@ if __name__ == "__main__":
     l.append("E")
     l.append("E")
     print(l.count_occurences("E"))
+    print(f"is palindrome: {l.is_palindrome_one()}")
+    print(f"is palindrome: {l.is_palindrome_two()}")
     print(l.count_occurences_rec(l.head, 'E'))
     print(l.count_occurences('G'))
     print("rotating list about point C")
