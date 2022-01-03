@@ -257,6 +257,9 @@ class LinkedList:
             cur_node = prev_node.next_node
 
     def find_n_to_last(self, n_to_last):
+        """
+        returns the data element of the nth to last node.
+        """
         length = self.get_length()
 
         # go through list again but now no where n_to_last is
@@ -294,6 +297,31 @@ class LinkedList:
                 return 1 + self.count_occurences_rec(node.next_node, data)
             return self.count_occurences_rec(node.next_node, data)
 
+    def rotate_list(self, rotate_data):
+        """
+        if rotate_data = 4, for given list
+        1 -> 2 -> 3 -> 4 -> 5 -> 6 -> None
+        rotating about point 4 gives
+        5 -> 6 -> 1 -> 2 -> 3 -> 4 -> None
+        """
+        cur_node = self.head
+        after_rotate = None
+        rotate = None
+        while cur_node.next_node:
+            if cur_node.data == rotate_data:
+                rotate = cur_node
+                after_rotate = cur_node.next_node
+
+            cur_node = cur_node.next_node
+        # at last node after exiting while loop
+        last_node = cur_node
+
+        if rotate and after_rotate:
+            rotate.next_node = None
+            last_node.next_node = self.head
+            self.head = after_rotate
+
+
 
 if __name__ == "__main__":
     l = LinkedList()
@@ -306,6 +334,9 @@ if __name__ == "__main__":
     print(l.count_occurences("E"))
     print(l.count_occurences_rec(l.head, 'E'))
     print(l.count_occurences('G'))
+    print("rotating list about point C")
+    l.rotate_list('C')
+    l.print_list()
     third_to_last = l.find_n_to_last(3)
     print(f"third to last {third_to_last}")
     l.print_list()
