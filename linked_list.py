@@ -355,6 +355,23 @@ class LinkedList:
             return True
         return False
 
+    def move_tail_to_head(self):
+        """
+        moves the tail of the list to the
+        head and the head to the tail.
+        """
+        last_node = self.head
+        prev_node = None
+        while last_node.next_node:
+            prev_node = last_node
+            last_node = last_node.next_node
+
+        prev_node.next_node = None
+        last_node.next_node = self.head
+        self.head = last_node
+
+
+
 if __name__ == "__main__":
     l = LinkedList()
     l.append("R")
@@ -369,10 +386,8 @@ if __name__ == "__main__":
     l.append("E")
     l.append("A")
     l.append("B")
-    l.append("C")
-    l.append("D")
-    l.append("E")
-    l.append("E")
+    l.move_tail_to_head()
+    l.print_list()
     print(l.count_occurences("E"))
     print(f"is palindrome: {l.is_palindrome_one()}")
     print(f"is palindrome: {l.is_palindrome_two()}")
